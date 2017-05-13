@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Debtors extends Model
 {
-    protected $table='tbl_profiles​';
+    protected $table='users';
 
 }
