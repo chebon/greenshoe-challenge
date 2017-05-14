@@ -24,9 +24,13 @@ class DebtorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function searchView()
     {
-        //
+        dd('search-view');
+    }
+
+    public function searchPost(){
+
     }
 
     /**
