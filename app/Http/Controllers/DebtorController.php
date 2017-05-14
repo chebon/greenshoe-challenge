@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Debtors;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
+use Yajra\Datatables\Facades\Datatables;
+use App\DataTables\DebtorDataTable;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DebtorController extends Controller
 {
@@ -13,10 +16,15 @@ class DebtorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(DebtorDataTable $dataTable)
     {
-        $debtors = Debtors::all();
-        return Response()->json($debtors);
+        return $dataTable->render('greenshoe.debtors.list');
+    }
+
+    public function listData(){
+
+        $debtors = Debtors::with('detail')->get();
+        return Datatables::of($debtors)->make(true);
     }
 
     /**
@@ -26,11 +34,41 @@ class DebtorController extends Controller
      */
     public function searchView()
     {
-        dd('search-view');
+        return view('greenshoe.debtors.search');
     }
 
-    public function searchPost(){
+    public function searchPost(Request $request){
+        $keyword =  (integer) $request->input('keyword');
 
+        $debtor = Debtors::with('detail')
+                    ->where('mobile_number', '=', $keyword)
+                    ->orwhere('national_id', '=', $keyword)
+                    ->get();
+
+        return view('greenshoe.debtors.search', ['debtors' => $debtor, 'keyword' => $keyword]);
+    }
+
+    public function export(Request $request){
+
+        $debtors = Debtors::with('detail')->get();
+        $type  = ($request->input('exportFormart') == 1 ? 'xls' : 'csv');
+        Excel::create('debtors', function($excel) use ($debtors)
+        {
+            $excel->sheet('debtors', function($sheet) use ($debtors)
+            {
+                $companies = [];
+                foreach ($debtors as $lead) {
+                    $company = [];
+                    $company['# id']= $lead->id;
+                    $company['Mobile Number']= $lead->mobile_number;
+                    $company['ID number']= $lead->national_id;
+                    $company['Loan Amount']= $lead->detail->loan_amount;
+                    $company['loan issue date']= $lead->detail->loan_issue_date;
+                    $companies[] = $company;
+                }
+                $sheet->fromArray($companies);
+            });
+        })->download($type);
     }
 
     /**

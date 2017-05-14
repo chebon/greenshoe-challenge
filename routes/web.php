@@ -11,15 +11,20 @@
 |
 */
 
+
+
+
 Route::get('/', function () {
     //return view('welcome');
     //return view('greenshoe.index');
 
 
-    return view('greenshoe.users.manager');
+    return view('greenshoe.debtors.list');
 });
 
 Route::get('debtors/list', 'DebtorController@index')->name('debtor-list');
+Route::get('debtors/data', 'DebtorController@listData')->name('debtors.data');
+Route::post('debtor/export', 'DebtorController@export')->name('debtors.export');
 Route::get('debtors/search', 'DebtorController@searchView')->name('debtor-search-view');
 Route::post('debtors/search', 'DebtorController@searchPost')->name('debtor-search');
 

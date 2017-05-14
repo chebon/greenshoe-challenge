@@ -10,4 +10,9 @@ class DebtorDetails extends Model
 
     protected $fillable=['cust_acno', 'cust_id', 'cust_mobile_number', 'cust_name', 'loan_amount', 'loan_balance', 'loan_due_date', 'loan_issue_date'];
 
+    public function debtor()
+    {
+        return $this->belongsTo('App\Models\Debtor', 'id');
+    }
+
 }

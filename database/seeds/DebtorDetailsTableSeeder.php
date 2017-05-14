@@ -16,7 +16,7 @@ class DebtorDetailsTableSeeder extends Seeder
         for($i = 0; $i<=20; $i++){
             DB::table('tbl_due_listing')->insert([
                 'cust_acno' => $faker->numberBetween($min = 6104, $max = 139456),
-                'cust_id' => $faker->numberBetween($min = 7, $max = 750),
+                'cust_id' => $faker->numberBetween($min = 1, $max = 20),
                 'cust_mobile_number' => $faker->numberBetween($min = 710000000, $max = 727000000),
                 'cust_name' => $faker->numberBetween($min = 1, $max = 3),
                 'loan_amount' => $faker->numberBetween($min = 200, $max = 14000),
