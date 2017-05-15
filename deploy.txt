@@ -41,7 +41,7 @@ Php artisan config:cache
 ```
 
 
-We are now ready to generate out tables on the database by running 
+We are now ready to generate out tables on the database by running
 
 ```php
 Php artisan migrate
@@ -50,7 +50,7 @@ Php artisan migrate
 If the tables already exists in the database they will be ignored and the ones used for authentication will be created
 
 
-Next step is to generate Dummy data by running 
+Next step is to generate Dummy data by running
 
 ```php
 php artisan db:seed
@@ -58,7 +58,7 @@ php artisan db:seed
 
 This will populate the database with dummy data using files in `database/seeds` i.e `DebtorDetailsTableSeeder.php` and  `DebtorTableSeeder.php`
 
-We can now initialize the application by running 
+We can now initialize the application by running
 
 ```php
 php artisan greenshoe:install
