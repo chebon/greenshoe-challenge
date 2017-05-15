@@ -30,6 +30,16 @@ class MigrationCartalystSentinel extends Migration
      */
     public function up()
     {
+
+
+        Schema::drop('activations');
+        Schema::drop('persistences');
+        Schema::drop('reminders');
+        Schema::drop('roles');
+        Schema::drop('role_users');
+        Schema::drop('throttle');
+        Schema::drop('users');
+
         Schema::create('activations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
