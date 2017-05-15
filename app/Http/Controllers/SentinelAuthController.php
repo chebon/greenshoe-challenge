@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
+Use Cartalyst\Sentinel\Laravel\Facades\Reminder;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 use Cartalyst\Sentinel\Laravel\Facades\Activation;
@@ -17,7 +18,15 @@ class SentinelAuthController extends Controller
      */
     public function index()
     {
-        return view('greenshoe.auth.login');
+
+        if (!Sentinel::guest()) {
+            $user = Sentinel::getUser();
+            return $this->redirectUsers($user);
+        }
+        else{
+            return view('greenshoe.auth.login');
+        }
+
     }
 
     /**
@@ -48,10 +57,16 @@ class SentinelAuthController extends Controller
 
 
         if(!$authentication){
-            return 'autentication Failed';
+            return redirect('/login')->with('message', 'Username password not matching');
         }
 
+        return $this->redirectUsers($authentication);
 
+
+
+    }
+
+    protected function redirectUsers($authentication){
         if ($authentication->hasAccess(['list.export']))
         {
             return redirect('/debtors/list');
@@ -61,8 +76,6 @@ class SentinelAuthController extends Controller
             return redirect('/debtors/search');
 
         }
-
-
     }
 
     /**
@@ -112,24 +125,30 @@ class SentinelAuthController extends Controller
 
     public function register(Request $request){
 
+        $password = $request->input('password');
+        $confirm = $request->input('confirmPassword');
+
+        if($confirm != $password){
+            return redirect('/register')->withInput()->with('message', 'Password Does not match');
+        }
+
         //register user
         $credentials = [
-            'email'    => $request->input('email'),
+            'email'    => $request->input('username'),
             'first_name'    => $request->input('firstname'),
             'last_name'    => $request->input('lastname'),
-            'password' => 'foobar', //We set default password here. Users with default password will be prompt to reset their password
+            'password' => $password,
         ];
 
         $user = Sentinel::register($credentials);
 
-        $activationResponse = $this->activateUser($user, $request->input('accessControl'));
+        $this->activateUser($user, $request->input('accessControl'));
 
-        $message = ( $activationResponse ? 'User Created!' : 'User Not Created. Please try Again!');
-
+        $authentication = Sentinel::authenticate($credentials);
+        return $this->redirectUsers($authentication);
 
         return redirect('/users/list')->with('status', $message);
 
-        return Response()->json($user);
     }
 
     public function listUsers(){
@@ -162,5 +181,68 @@ class SentinelAuthController extends Controller
     public function logout(){
         Sentinel::logout(null, true);
         return redirect('/login');
+    }
+
+    public function resetView(){
+        return view('greenshoe.auth.pwd-reset');
+    }
+
+    public function registerView(){
+        return view('greenshoe.auth.register');
+    }
+
+    public function resetPasswordView(Request $request){
+
+        $username = $request->input('username');
+
+        if ($request->has('ResetToken')) {
+            $password = $request->input('password');
+            $confirm = $request->input('confirmPassword');
+            $token = $request->input('ResetToken');
+
+            if($confirm != $password){
+                $message = 'Password Does not Match';
+                $reminder = ['code' => $token];
+                $reminder = (object) $reminder;
+                return view('greenshoe.auth.pwd-reset-form', ['username' => $username, 'reminder' => $reminder, 'message' => $message]);
+            }
+
+            return $this->resetPassword($password, $token, $username);
+
+        } else {
+
+            $credentials = [
+                'email' => $username
+            ];
+            $user = Sentinel::findByCredentials($credentials);
+            if ($user == null) {
+                return redirect('/password/reset')->withInput()->with('message', 'No user Associated with that username');
+            }
+            $reminder = Reminder::create($user);
+            return view('greenshoe.auth.pwd-reset-form', ['username' => $username, 'reminder' => $reminder]);
+        }
+    }
+
+    protected function resetPassword($pwd, $token, $username){
+
+        $credentials = [
+            'email' => $username
+        ];
+
+        $user = Sentinel::findByCredentials($credentials);
+
+        if ($reminder = Reminder::complete($user, $token, $pwd))
+        {
+            $credentials = [
+                'email'    => $username,
+                'password' => $pwd,
+            ];
+
+            Sentinel::authenticate($credentials);
+            return redirect('/login');
+        }
+
+        return "Sorry Some anomaly occurred try again";
+
     }
 }

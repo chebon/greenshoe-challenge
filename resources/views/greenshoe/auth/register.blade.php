@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GreenShoe | Log in</title>
+    <title>GreenShoe</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -24,52 +24,69 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-    <div class="login-logo">
-        <a href="#"><b>Green</b>Shoe</a>
+<body class="hold-transition register-page">
+<div class="register-box">
+    <div class="register-logo">
+        <a href="../../index2.html"><b>Green</b>Shoe</a>
     </div>
-    <!-- /.login-logo -->
-    <div class="login-box-body">
+
+    <div class="register-box-body">
+
         @if (session('message'))
             <p class="login-box-msg" style=" color: #f40d0d; ">{{ session('message') }}</p>
         @else
-            <p class="login-box-msg">Sign in to start your session</p>
+            <p class="login-box-msg">Register a new User</p>
         @endif
 
-        <form action="/login" method="post">
+        <form action="/register" method="post">
             {{ csrf_field() }}
             <div class="form-group has-feedback">
-                <input type="email"  name="email" class="form-control" placeholder="Email">
+                <input type="text" name="firstName"  value="{{ old('firstName') }}" class="form-control" placeholder="First name">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+
+            <div class="form-group has-feedback">
+                <input type="text" name="lastName"  value="{{ old('lastName') }}" class="form-control" placeholder="Last name">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+
+
+            <div class="form-group has-feedback">
+                <input type="text" name="username"  value="{{ old('username') }}" class="form-control" placeholder="Username">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
                 <input type="password" name="password" class="form-control" placeholder="Password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
-            <div class="row">
-                <div class="col-xs-8">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox" name="remember"> Remember Me
-                        </label>
-                    </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="confirmPassword" class="form-control" placeholder="Retype password">
+                <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            </div>
+
+            <div class="form-group has-feedback" style=" padding-bottom: 11px; ">
+                <label for="inputPassword3" class="col-sm-2 control-label">Access</label>
+
+                <div class="col-sm-10" style=" padding-bottom: 12px; ">
+                    <select class="form-control" name="accessControl" id="slcAccessControl">
+                        <option value="1" {{ (old("accessControl") == 1 ? "selected":"") }}>User 1</option>
+                        <option value="2" {{ (old("accessControl") == 2 ? "selected":"") }}>User 2</option>
+                    </select>
                 </div>
+            </div>
+            <div class="row">
                 <!-- /.col -->
-                <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                <div class="col-xs-4 col-xs-offset-4" style=" padding-bottom: 11px; ">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
                 </div>
                 <!-- /.col -->
             </div>
         </form>
-        <!-- /.social-auth-links -->
-
-        <a href="/password/reset">I forgot my password</a><br>
-
+        <a href="/login" class="text-center">I already have an Account</a>
     </div>
-    <!-- /.login-box-body -->
+    <!-- /.form-box -->
 </div>
-<!-- /.login-box -->
+<!-- /.register-box -->
 
 <!-- jQuery 2.2.3 -->
 <script src="../../plugins/jQuery/jquery-2.2.3.min.js"></script>

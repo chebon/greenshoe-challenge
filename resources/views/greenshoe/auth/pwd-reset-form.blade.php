@@ -31,40 +31,40 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        @if (session('message'))
-            <p class="login-box-msg" style=" color: #f40d0d; ">{{ session('message') }}</p>
+        @if (isset($message))
+            <p class="login-box-msg" style=" color: #f40d0d; ">{{ $message }}</p>
         @else
-            <p class="login-box-msg">Sign in to start your session</p>
+            <p class="login-box-msg">Password Reset</p>
         @endif
 
-        <form action="/login" method="post">
+        <form action="/password/reset" method="post">
             {{ csrf_field() }}
+
             <div class="form-group has-feedback">
-                <input type="email"  name="email" class="form-control" placeholder="Email">
+                <input type="text"  name="username" readonly="readonly" value="{{ $username }}" class="form-control" placeholder="username">
+
+                <input type="text"  name="ResetToken" readonly="readonly" value="{{ $reminder->code }}" class="form-control" hidden style="display: none;">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" name="password" class="form-control" placeholder="Password">
+                <input type="password"  name="password" class="form-control" placeholder="password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
+
+            <div class="form-group has-feedback">
+                <input type="password"  name="confirmPassword" class="form-control" placeholder="ConformPassword">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+
             <div class="row">
-                <div class="col-xs-8">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input type="checkbox" name="remember"> Remember Me
-                        </label>
-                    </div>
-                </div>
                 <!-- /.col -->
-                <div class="col-xs-4">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                <div class="col-xs-5">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Reset Password</button>
                 </div>
                 <!-- /.col -->
             </div>
         </form>
         <!-- /.social-auth-links -->
-
-        <a href="/password/reset">I forgot my password</a><br>
 
     </div>
     <!-- /.login-box-body -->
