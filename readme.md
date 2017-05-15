@@ -75,3 +75,13 @@ php artisan greenshoe:install
 
 This will Populate the roles in the database i.e  Role 1 and Role 2
 
+
+To initalize  inbuild server for laravel from work run
+
+```php
+php artisan serve
+```
+
+Then navigate to `localhost:8000/register`  to start by registering new users. 
+
+
