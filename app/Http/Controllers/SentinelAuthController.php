@@ -147,8 +147,6 @@ class SentinelAuthController extends Controller
         $authentication = Sentinel::authenticate($credentials);
         return $this->redirectUsers($authentication);
 
-        return redirect('/users/list')->with('status', $message);
-
     }
 
     public function listUsers(){

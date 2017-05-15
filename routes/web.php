@@ -16,7 +16,7 @@ Route::group(['middleware' => 'sentinel'], function () {
     Route::group(['middleware' => 'admin'], function () {
 
         Route::get('/', function () {
-            return redirect('/users/list');
+            return redirect('debtors/search');
         });
 
         Route::get('debtors/list', 'DebtorController@index')->name('debtor-list');
