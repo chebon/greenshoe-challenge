@@ -13,18 +13,20 @@ class CreateDebtorsDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_due_listing', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('cust_acno');
-            $table->integer('cust_id');
-            $table->integer('cust_mobile_number');
-            $table->string('cust_name');
-            $table->integer('loan_amount');
-            $table->integer('loan_balance');
-            $table->dateTime('loan_due_date');
-            $table->dateTime('loan_issue_date');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('tbl_due_listing')) {
+            Schema::create('tbl_due_listing', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('cust_acno');
+                $table->integer('cust_id');
+                $table->integer('cust_mobile_number');
+                $table->string('cust_name');
+                $table->integer('loan_amount');
+                $table->integer('loan_balance');
+                $table->dateTime('loan_due_date');
+                $table->dateTime('loan_issue_date');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
