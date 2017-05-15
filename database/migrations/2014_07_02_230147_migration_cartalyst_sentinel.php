@@ -30,31 +30,31 @@ class MigrationCartalystSentinel extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('activations')) {
+        if (Schema::hasTable('activations')) {
             Schema::drop('activations');
         }
 
-        if (!Schema::hasTable('persistences')) {
+        if (Schema::hasTable('persistences')) {
             Schema::drop('persistences');
         }
 
-        if (!Schema::hasTable('reminders')) {
+        if (Schema::hasTable('reminders')) {
             Schema::drop('reminders');
         }
 
-        if (!Schema::hasTable('roles')) {
+        if (Schema::hasTable('roles')) {
             Schema::drop('roles');
         }
 
-        if (!Schema::hasTable('role_users')) {
+        if (Schema::hasTable('role_users')) {
             Schema::drop('role_users');
         }
 
-        if (!Schema::hasTable('throttle')) {
+        if (Schema::hasTable('throttle')) {
             Schema::drop('throttle');
         }
 
-        if (!Schema::hasTable('users')) {
+        if (Schema::hasTable('users')) {
             Schema::drop('users');
         }
 

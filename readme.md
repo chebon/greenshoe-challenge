@@ -5,15 +5,24 @@
 - Mbstring PHP Extension
 - Tokenizer PHP Extension
 - XML PHP Extension
-- DOM extension
+- DOM extension (xml)
 - GD extension
+- Pgsql extension
+- Zip extension
 
 # Installation
 
 Copy .env.example file to .env by running
 
 ```php
-cp .env.example .env.
+cp .env.example .env
+```
+
+We now need to install packages using composer by running
+
+
+```php
+composer install
 ```
 
 After the new file has been created you need to generate a hash key by running
@@ -37,20 +46,20 @@ This Should match your database credentials and port if you are trying on mysql 
 Next is to publish our configuration by running
 
 ```php
-Php artisan config:cache
+php artisan config:cache
 ```
 
 
-We are now ready to generate out tables on the database by running 
+We are now ready to generate out tables on the database by running
 
 ```php
-Php artisan migrate
+php artisan migrate
 ```
 
 If the tables already exists in the database they will be ignored and the ones used for authentication will be created
 
 
-Next step is to generate Dummy data by running 
+Next step is to generate Dummy data by running
 
 ```php
 php artisan db:seed
@@ -58,7 +67,7 @@ php artisan db:seed
 
 This will populate the database with dummy data using files in `database/seeds` i.e `DebtorDetailsTableSeeder.php` and  `DebtorTableSeeder.php`
 
-We can now initialize the application by running 
+We can now initialize the application by running
 
 ```php
 php artisan greenshoe:install
