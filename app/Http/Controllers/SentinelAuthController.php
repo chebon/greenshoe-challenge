@@ -158,4 +158,9 @@ class SentinelAuthController extends Controller
         $role->users()->attach($user);
         return true;
     }
+
+    public function logout(){
+        Sentinel::logout(null, true);
+        return redirect('/login');
+    }
 }

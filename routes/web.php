@@ -22,14 +22,20 @@ Route::get('/', function () {
     return view('greenshoe.debtors.list');
 });
 
-Route::get('debtors/list', 'DebtorController@index')->name('debtor-list');
-Route::get('debtors/data', 'DebtorController@listData')->name('debtors.data');
-Route::post('debtor/export', 'DebtorController@export')->name('debtors.export');
-Route::get('debtors/search', 'DebtorController@searchView')->name('debtor-search-view');
-Route::post('debtors/search', 'DebtorController@searchPost')->name('debtor-search');
+Route::group(['middleware' => 'sentinel'], function () {
 
+    Route::group(['middleware' => 'admin'], function () {
 
-Route::get('/users/list', 'SentinelAuthController@listUsers')->name('users-list');
+        Route::get('debtors/list', 'DebtorController@index')->name('debtor-list');
+        Route::post('register', 'SentinelAuthController@register')->name('register');
+        Route::get('debtors/data', 'DebtorController@listData')->name('debtors.data');
+        Route::post('debtor/export', 'DebtorController@export')->name('debtors.export');
+        Route::get('/users/list', 'SentinelAuthController@listUsers')->name('users-list');
+    });
 
-Route::post('register', 'SentinelAuthController@register')->name('register');
+    Route::post('debtors/search', 'DebtorController@searchPost')->name('debtor-search');
+    Route::get('debtors/search', 'DebtorController@searchView')->name('debtor-search-view');
+});
+
 Route::resource('login', 'SentinelAuthController');
+Route::get('logout', 'SentinelAuthController@logout');

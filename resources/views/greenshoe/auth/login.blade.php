@@ -31,7 +31,11 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start your session</p>
+        @if (session('message'))
+            <p class="login-box-msg" style=" color: #f40d0d; ">{{ session('message') }}</p>
+        @else
+            <p class="login-box-msg">Sign in to start your session</p>
+        @endif
 
         <form action="/login" method="post">
             {{ csrf_field() }}

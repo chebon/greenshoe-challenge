@@ -6,7 +6,6 @@ use App\Models\Debtors;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Facades\Datatables;
-use App\DataTables\DebtorDataTable;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DebtorController extends Controller
@@ -16,9 +15,9 @@ class DebtorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(DebtorDataTable $dataTable)
+    public function index()
     {
-        return $dataTable->render('greenshoe.debtors.list');
+        return view('greenshoe.debtors.list');
     }
 
     public function listData(){
