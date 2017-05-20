@@ -76,7 +76,7 @@ php artisan greenshoe:install
 This will Populate the roles in the database i.e  Role 1 and Role 2
 
 
-To initalize  inbuild server for laravel from work run
+To initalize  inbuild server for laravel from terminal run
 
 ```php
 php artisan serve
